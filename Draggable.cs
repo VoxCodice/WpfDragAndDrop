@@ -22,6 +22,7 @@ namespace WpfDragAndDrop
 
         private bool dragging = false;
         private bool shouldCancel = true;
+        private Point centerPointOffset;
         private Point startPoint;
         private FrameworkElement? dragPreviewElement;
         private Point initialPosition;
@@ -167,6 +168,7 @@ namespace WpfDragAndDrop
         {
             DragStartCommand?.Execute(DragStartCommandParameter);
 
+            CalculateCenterPointOffset(e);
             SetDragPreviewElement();
 
             initialPosition = associatedElement.TranslatePoint(new(0, 0), Container);
@@ -195,6 +197,14 @@ namespace WpfDragAndDrop
             }
 
             CaptureDevice();
+        }
+
+        private void CalculateCenterPointOffset(EventArgs e)
+        {
+            var pointOnAssociatedElement = GetPosition(e, associatedElement);
+            var xOffset = associatedElement.ActualWidth / 2 - pointOnAssociatedElement.X;
+            var yOffset = associatedElement.ActualHeight / 2 - pointOnAssociatedElement.Y;
+            centerPointOffset = new(xOffset, yOffset);
         }
 
         private void OnDrag(object? sender, EventArgs e)
@@ -253,13 +263,19 @@ namespace WpfDragAndDrop
             Canvas.SetTop(dragPreviewElement, initialPosition.Y + deltaY);
         }
 
-        private void PerformHitTest(Point point)
+        private void PerformHitTest(EventArgs e)
         {
+            var window = Window.GetWindow(associatedElement);
+            var pointRelativeToWindow = GetPosition(e, window);
+            var offsetpoint = new Point(pointRelativeToWindow.X + centerPointOffset.X,
+                                        pointRelativeToWindow.Y + centerPointOffset.Y);
+
             newDragTarget = null;
-            VisualTreeHelper.HitTest(Window.GetWindow(associatedElement),
+            VisualTreeHelper.HitTest(window,
                                      null,
                                      new(HitTestResultCallback),
-                                     new PointHitTestParameters(point));
+                                     new PointHitTestParameters(offsetpoint));
+        }
 
         private void CalculateDragEnterDirection(EventArgs e, FrameworkElement associatedElement)
             {
