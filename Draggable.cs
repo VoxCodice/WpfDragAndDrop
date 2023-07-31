@@ -53,25 +53,29 @@ namespace WpfDragAndDrop
 
         private void Attach()
         {
-            switch (Initiator)
+            if(Initiator == DragInitiator.Any)
             {
-                case DragInitiator.Any:
-                    associatedElement?.AddHandler(PreviewTouchDownEvent, dragStartHandler, true);
-                    associatedElement?.AddHandler(PreviewMouseDownEvent, dragStartHandler, true);
-                    return;
-                case DragInitiator.Mouse:
-                    associatedElement?.AddHandler(PreviewMouseDownEvent, dragStartHandler, true);
-                    return;
-                case DragInitiator.LeftMouse:
-                    associatedElement?.AddHandler(PreviewMouseLeftButtonDownEvent, dragStartHandler, true);
-                    return;
-                case DragInitiator.RightMouse:
-                    associatedElement?.AddHandler(PreviewMouseRightButtonDownEvent, dragStartHandler, true);
-                    return;
-                case DragInitiator.Touch:
-                    associatedElement?.AddHandler(PreviewTouchDownEvent, dragStartHandler, true);
-                    return;
+                associatedElement?.AddHandler(PreviewTouchDownEvent, dragStartHandler, true);
+                associatedElement?.AddHandler(PreviewMouseDownEvent, dragStartHandler, true);
+                return;
             }
+
+            if(Initiator.HasFlag(DragInitiator.Mouse))
+            {
+                associatedElement?.AddHandler(PreviewMouseDownEvent, dragStartHandler, true);
+                if(Initiator.HasFlag(DragInitiator.Touch))
+                    associatedElement?.AddHandler(PreviewTouchDownEvent, dragStartHandler, true);
+                return;
+            }
+
+            if(Initiator.HasFlag(DragInitiator.LeftMouse))
+                associatedElement?.AddHandler(PreviewMouseLeftButtonDownEvent, dragStartHandler, true);
+
+            if (Initiator.HasFlag(DragInitiator.RightMouse))
+                associatedElement?.AddHandler(PreviewMouseRightButtonDownEvent, dragStartHandler, true);
+
+            if (Initiator.HasFlag(DragInitiator.Touch))
+                associatedElement?.AddHandler(PreviewTouchDownEvent, dragStartHandler, true);
         }
 
         private void Detach()
@@ -135,12 +139,6 @@ namespace WpfDragAndDrop
 
         private void SetCurrentInitiator(RoutedEventArgs e)
         {
-            if (Initiator != DragInitiator.Any)
-            {
-                currentInitiator = Initiator;
-                return;
-            }
-
             currentInitiator = e switch
             {
                 MouseButtonEventArgs mbea => mbea.ChangedButton switch
@@ -172,8 +170,6 @@ namespace WpfDragAndDrop
             SetDragPreviewElement();
 
             initialPosition = associatedElement.TranslatePoint(new(0, 0), Container);
-            initialPosition.X -= associatedElement.Margin.Left;
-            initialPosition.Y -= associatedElement.Margin.Top; //ToDo: why do I substract the margin?
 
             Canvas.SetLeft(dragPreviewElement, initialPosition.X);
             Canvas.SetTop(dragPreviewElement, initialPosition.Y);
@@ -278,7 +274,7 @@ namespace WpfDragAndDrop
         }
 
         private void CalculateDragEnterDirection(EventArgs e, FrameworkElement associatedElement)
-            {
+        {
             var pointRelativeToTarget = GetPosition(e, associatedElement);
             pointRelativeToTarget.X += Math.Round(centerPointOffset.X, 2);
             pointRelativeToTarget.Y += Math.Round(centerPointOffset.Y, 2);
