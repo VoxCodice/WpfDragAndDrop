@@ -17,8 +17,7 @@ namespace WpfDragAndDrop
         public static readonly DependencyProperty DragStopCommandProperty = DependencyProperty.Register(nameof(DragStopCommand), typeof(ICommand), typeof(Draggable), new PropertyMetadata(null));
         public static readonly DependencyProperty DragStopCommandParameterProperty = DependencyProperty.Register(nameof(DragStopCommandParameter), typeof(object), typeof(Draggable), new PropertyMetadata(null));
         public static readonly DependencyProperty DragCompleteCommandProperty = DependencyProperty.Register("DragCompleteCommand", typeof(ICommand), typeof(Draggable), new PropertyMetadata(null));
-
-        public static readonly DependencyProperty DraggableObjectProperty = DependencyProperty.Register("DraggableObject", typeof(object), typeof(Draggable), new PropertyMetadata(null));
+        public static readonly DependencyProperty DragCompleteCommandParameterProperty = DependencyProperty.Register("DragCompleteCommandParameter", typeof(object), typeof(Draggable), new PropertyMetadata(null));
 
         public int Delay
         {
@@ -74,10 +73,10 @@ namespace WpfDragAndDrop
             set => SetValue(DragCompleteCommandProperty, value);
         }
 
-        public object? DraggableObject
+        public object? DragCompleteCommandParameter
         {
-            get => GetValue(DraggableObjectProperty);
-            set => SetValue(DraggableObjectProperty, value);
+            get => GetValue(DragCompleteCommandParameterProperty);
+            set => SetValue(DragCompleteCommandParameterProperty, value);
         }
 
         public static DragDropGroupCollection GetDragDropGroups(DependencyObject obj) => (DragDropGroupCollection)obj.GetValue(DragDropGroupsProperty);

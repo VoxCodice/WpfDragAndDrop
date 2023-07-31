@@ -370,7 +370,7 @@ namespace WpfDragAndDrop
 
             DragStopCommand?.Execute(DragStopCommandParameter);
             if (dragComplete)
-                DragCompleteCommand?.Execute(new DragCompleteParams(currentDragEnterDirection, DraggableObject, targetObject));
+                DragCompleteCommand?.Execute(new DragCompleteParams(currentDragEnterDirection, DragCompleteCommandParameter, targetObject));
         }
 
         private void CaptureDevice()
