@@ -29,6 +29,8 @@ namespace WpfDragAndDrop
         private DragInitiator currentInitiator = DragInitiator.Any;
         private Target? currentDragTarget = null;
         private Target? newDragTarget = null;
+        private DragEnterDirection currentDragEnterDirection;
+        private DragEnterDirection newDragEnterDirection;
 
         public Draggable()
         {
@@ -39,6 +41,7 @@ namespace WpfDragAndDrop
             dragEventHandler = new(OnDrag);
             dragStopHandler = new(OnDragStop);
         }
+
         protected internal void Initialize()
         {
             Detach();
@@ -198,7 +201,48 @@ namespace WpfDragAndDrop
         {
             ((InputEventArgs)e).Handled = true;
             DragPreviewElement(GetPosition(e, Container));
-            PerformHitTest(GetPosition(e, Window.GetWindow(associatedElement)));
+            PerformHitTest(e);
+
+            // Object first time dragged over a target
+            if (newDragTarget != null && currentDragTarget == null)
+            {
+                currentDragTarget = newDragTarget;
+                CalculateDragEnterDirection(e, currentDragTarget.associatedElement);
+                currentDragEnterDirection = newDragEnterDirection;
+                OnDragEntered();
+                return;
+            }
+
+            // Object dragged over the same target 
+            if (newDragTarget != null && newDragTarget == currentDragTarget)
+            {
+                CalculateDragEnterDirection(e, currentDragTarget.associatedElement);
+                if (currentDragEnterDirection == newDragEnterDirection)
+                    return;
+
+                // Dragged from different angle
+                currentDragEnterDirection = newDragEnterDirection;
+                OnDragEntered();
+                return;
+            }
+
+            // Object dragged over new target
+            if (newDragTarget != null && currentDragTarget != null && newDragTarget != currentDragTarget)
+            {
+                OnDragLeft();
+                currentDragTarget = newDragTarget;
+                CalculateDragEnterDirection(e, currentDragTarget.associatedElement);
+                currentDragEnterDirection = newDragEnterDirection;
+                OnDragEntered();
+                return;
+            }
+
+            // Object not dragged over any target
+            if (newDragTarget == null && currentDragTarget != null)
+            {
+                OnDragLeft();
+                currentDragTarget = null;
+            }
         }
 
         private void DragPreviewElement(Point point)
@@ -217,14 +261,35 @@ namespace WpfDragAndDrop
                                      new(HitTestResultCallback),
                                      new PointHitTestParameters(point));
 
-            if (newDragTarget != null)
+        private void CalculateDragEnterDirection(EventArgs e, FrameworkElement associatedElement)
             {
-                if (currentDragTarget != null)
-                    OnDragLeft();
-                OnDragEntered();
-            }
-            else if (currentDragTarget != null)
-                OnDragLeft();
+            var pointRelativeToTarget = GetPosition(e, associatedElement);
+            pointRelativeToTarget.X += Math.Round(centerPointOffset.X, 2);
+            pointRelativeToTarget.Y += Math.Round(centerPointOffset.Y, 2);
+
+            var firstWidthThird = Math.Round(associatedElement.ActualWidth / 3, 2);
+            var firstHeightThird = Math.Round(associatedElement.ActualHeight / 3, 2);
+            var secondWidthThird = Math.Round(firstWidthThird * 2, 2);
+            var secondHeightThird = Math.Round(firstHeightThird * 2, 2);
+
+            if (pointRelativeToTarget.X > firstWidthThird && pointRelativeToTarget.X < secondWidthThird &&
+                pointRelativeToTarget.Y > firstHeightThird && pointRelativeToTarget.Y < secondHeightThird)
+                return;
+
+            newDragEnterDirection = 0;
+            if (pointRelativeToTarget.X < firstWidthThird)
+                newDragEnterDirection |= DragEnterDirection.West;
+            else if (pointRelativeToTarget.X > secondWidthThird)
+                newDragEnterDirection |= DragEnterDirection.East;
+            else
+                newDragEnterDirection |= (currentDragEnterDirection & (DragEnterDirection.East | DragEnterDirection.West));
+
+            if (pointRelativeToTarget.Y < firstHeightThird)
+                newDragEnterDirection |= DragEnterDirection.North;
+            else if (pointRelativeToTarget.Y > secondHeightThird)
+                newDragEnterDirection |= DragEnterDirection.South;
+            else
+                newDragEnterDirection |= (currentDragEnterDirection & (DragEnterDirection.North | DragEnterDirection.South));
         }
 
         private HitTestResultBehavior HitTestResultCallback(HitTestResult hitTestResult)
@@ -243,25 +308,21 @@ namespace WpfDragAndDrop
 
         private void OnDragEntered()
         {
-            if (newDragTarget is null)
+            if (currentDragTarget is null)
                 return;
 
-            if (newDragTarget == currentDragTarget)
-                return;
-
-            var targetGroups = Target.GetDragDropGroups(newDragTarget);
+            var targetGroups = Target.GetDragDropGroups(currentDragTarget);
             var groups = GetDragDropGroups(this);
             if (!targetGroups.Any(tg => groups.Any(g => g.Key == tg.Key)))
                 return;
 
-            currentDragTarget = newDragTarget;
-            currentDragTarget.DragEnterCommand?.Execute(currentDragTarget.DragEnterCommandParameter);
+            var dragEnterParams = new DragEnterParams(currentDragTarget.DragEnterCommandParameter, currentDragEnterDirection);
+            currentDragTarget.DragEnterCommand?.Execute(dragEnterParams);
         }
 
         private void OnDragLeft()
         {
             currentDragTarget?.DragLeaveCommand?.Execute(currentDragTarget.DragLeaveCommandParameter);
-            currentDragTarget = null;
         }
 
         private void OnDragStop(object? sender, EventArgs e)
@@ -297,7 +358,7 @@ namespace WpfDragAndDrop
 
             DragStopCommand?.Execute(DragStopCommandParameter);
             if (dragComplete)
-                DragCompleteCommand?.Execute(new DragCompleteParams(DraggableObject, targetObject));
+                DragCompleteCommand?.Execute(new DragCompleteParams(currentDragEnterDirection, DraggableObject, targetObject));
         }
 
         private void CaptureDevice()
