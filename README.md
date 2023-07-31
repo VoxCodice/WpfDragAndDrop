@@ -203,7 +203,9 @@ The class exposes the following dependency properties.
 <tr>
 <td> DragStartCommandParameter </td> <td> 
 
-`Object?`
+```csharp
+object?
+```
 
 </td> <td> </td> <td> 
 
@@ -235,7 +237,7 @@ Command parameter for the `DragStartCommand`.
 <tr>
 <td> DragStopCommandParameter </td> <td> 
 
-`Object?` 
+`object?` 
 
 </td> <td> </td> <td> 
 
@@ -267,7 +269,7 @@ Command parameter for the `DragStopCommand`.
 <tr>
 <td> DragCompleteCommandParameter </td> <td> 
 
-`Object?` 
+`object?` 
 
 </td> <td> </td> <td> 
 
@@ -298,11 +300,11 @@ The class exposes the following attached dependency properties.
 </thead>
 <tbody>
 <tr>
-<td> Container </td> <td>
+<td> DragDropGroups </td> <td>
 
-`Canvas`
+`DragDropGroupCollection`
 
-</td> <td> Canvas on which the dragged element is painted. </td>
+</td> <td> Specifies which group(s) the draggable object belongs to. The object can only be dropped on targets belonging to the same group(s). </td>
 <td> 
 
 ```xml
@@ -399,7 +401,7 @@ Command parameter for the `DragLeaveCommand`.
 <tr>
 <td> TargetObject </td><td>
 
-`Object?` 
+`object?` 
 
 </td><td> An object that can be used to store data associated with the target object. </td>
 <td>
@@ -466,7 +468,7 @@ Use this to specify which group(s) draggable and target objects belong to. You w
 
 `string`
 
-</td> <td> Uniquely identifies a drag and droup group. </td>
+</td> <td> Uniquely identifies a drag and drop group. </td>
 <td> 
 
 ```xml
@@ -567,7 +569,7 @@ A `DragEnterDirection` enum which specifies from what direction an object was dr
 ```csharp
 public class DragEnterCommand : ICommand
 {
-    public event EventHandler? CanExecuteChanged;```
+    public event EventHandler? CanExecuteChanged;
 
     public bool CanExecute(object? parameter) => true;
 
@@ -615,6 +617,8 @@ public class DragCompleteCommand : ICommand
 ### DragEnterDirection
 An enum used to represent from which direction a target was entered.
 
+The enum supports bitwise operations as it is marked with the `[Flags]` attribute.
+
 #### Enum values
 | Name  | Value    |
 |-------|----------|
@@ -623,10 +627,8 @@ An enum used to represent from which direction a target was entered.
 | South | `0b0100` |
 | West  | `0b1000` |
 
-The enum supports bitwise operations as it is marked with the `[Flags]` attribute.
-
 ### DragInitiator
-An enum used to specify which kind of user interaction can trigger a drag and drop event on a draggable object. It contains the following:
+An enum used to specify which kind of user interaction can trigger a drag and drop event on a draggable object.
 
 The enum supports bitwise operations as it is marked with the `[Flags]` attribute.
 
