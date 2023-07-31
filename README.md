@@ -203,9 +203,7 @@ The class exposes the following dependency properties.
 <tr>
 <td> DragStartCommandParameter </td> <td> 
 
-```csharp
-object?
-```
+`object?`
 
 </td> <td> </td> <td> 
 
