@@ -105,44 +105,345 @@ Used to specify that an object is draggable and configure it's behavior.
 
 The class exposes the following dependency properties.
 
-| Dependency Property          | Type                      | Default             | Description                                                                                                                                   | Example Usage                                                                                                                                                                                                                                                                                                       |
-|------------------------------|---------------------------|---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Container                    | `Canvas`                  |                     | Canvas on which the dragged element is painted.                                                                                               | `<dragDrop:Draggable Container="{Binding ElementName=canvasName}"/>`                                                                                                                                                                                                                                                |
-| Initiator                    | `DragInitiator`           | `DragInitiator.Any` | (Optional) Value indicating whether dragging is enabled for mouse, touch, or both. You can use the `DragInitiator` enum to set this property. | `<dragDrop:Draggable Initiator="LeftMouse"/>`</br></br><code style="display:block; white-space: pre">&lt;dragDrop:Draggable.Initiator&gt;&#13;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dragDrop:DragInitiator&gt; Touch, RightMouse &lt;/dragDrop:DragInitiator&gt;&#13;&lt;/dragDrop:Draggable.Initiator&gt;</code>             |
-| Delay                        | `int`                     | 0                   | (Optional) Duration (in milliseconds) for which the user must hold the mouse or touch down before the drag is initiated.                      | `<dragDrop:Draggable Delay="500"/>`                                                                                                                                                                                                                                                                                 |
-| DelayThreshold               | `int`                     | 0                   | (Optional) Maximum allowable movement (in pixels) while holding the mouse or touch down over a draggable before the drag is canceled.         | `<dragDrop:Draggable DelayThreshold="5"/>`                                                                                                                                                                                                                                                                          |
-| DragStartCommand             | `ICommand`                |                     | Command to execute when the drag operation starts.                                                                                            | `<dragDrop:Draggable DragStartCommand="{Binding DragStartCommand}"/>`                                                                                                                                                                                                                                               |
-| DragStartCommandParameter    | `Object?`                 |                     | Command parameter for the `DragStartCommand`.                                                                                                 | `<dragDrop:Draggable DragStartCommandParameter="{Binding DragStartData}"/>`                                                                                                                                                                                                                                         |
-| DragStopCommand              | `ICommand`                |                     | Command to execute when the drag operation stops.                                                                                             | `<dragDrop:Draggable DragStopCommand="{Binding DragStopCommand}"/>`                                                                                                                                                                                                                                                 |
-| DragStopCommandParameter     | `Object?`                 |                     | Command parameter for the `DragStopCommand`.                                                                                                  | `<dragDrop:Draggable DragStopCommandParameter="{Binding DragStopData}"/>`                                                                                                                                                                                                                                           |
-| DragCompleteCommand          | `ICommand`                |                     | Command to execute when the drag operation is completed.                                                                                      | `<dragDrop:Draggable DragCompleteCommand="{Binding DragCompleteCommand}"/>`                                                                                                                                                                                                                                         |
-| DragCompleteCommandParameter | `Object?`                 |                     | Command parameter for the `DragCompleteCommand`.                                                                                              | <code style="white-space: pre">&lt;dragDrop:Draggable DragCompleteCommandParameter="&#123;Binding DragCompleteData&#125;"/&gt;</code>                                                                                                                                                                               |
+<table>
+<thead>
+<tr>
+<th> Dependency Property </th>
+<th> Type                </th>
+<th> Default             </th>
+<th> Description         </th>
+<th> Example Usage       </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> Container </td> <td>
+
+`Canvas`
+
+</td> <td> </td> <td> Canvas on which the dragged element is painted. </td>
+<td> 
+
+```xml
+<dragDrop:Draggable Container="{Binding ElementName=canvasName}"/>
+```
+
+</td>
+</tr>
+<tr>
+<td> Initiator </td> <td>
+
+`DragInitiator`
+
+</td> <td> 
+
+`DragInitiator.Any` 
+
+</td> <td> 
+
+(Optional) Value indicating whether dragging is enabled for mouse, touch, or both. You can use the `DragInitiator` enum to set this property. 
+
+</td>
+<td> 
+
+```xml
+<!-- Single value -->
+<dragDrop:Draggable Initiator="LeftMouse"/>
+
+<!-- Or multiple values -->
+<dragDrop:Draggable.Initiator>
+    <dragDrop:DragInitiator> Touch, RightMouse </dragDrop:DragInitiator>
+</dragDrop:Draggable.Initiator>
+```
+
+</td>
+</tr>
+<tr>
+<td> Delay </td> <td>
+
+`int`
+
+</td> <td> 0 </td> <td> (Optional) Duration (in milliseconds) for which the user must hold the mouse or touch down before the drag is initiated. </td>
+<td> 
+
+```xml
+<dragDrop:Draggable Delay="500"/>
+```
+
+</td>
+</tr>
+<tr>
+<td> DelayThreshold </td> <td>
+
+`int`
+
+</td> <td> 0 </td> <td> (Optional) Maximum allowable movement (in pixels) while holding the mouse or touch down over a draggable before the drag is canceled. </td>
+<td> 
+
+```xml
+<dragDrop:Draggable DelayThreshold="5"/>
+```
+
+</td>
+</tr>
+<tr>
+<td> DragStartCommand </td> <td>
+
+`ICommand`
+
+</td> <td> </td> <td> Command to execute when the drag operation starts. </td>
+<td> 
+
+```xml
+<dragDrop:Draggable DragStartCommand="{Binding DragStartCommand}"/>
+```
+
+</td>
+</tr>
+<tr>
+<td> DragStartCommandParameter </td> <td> 
+
+`Object?`
+
+</td> <td> </td> <td> 
+
+Command parameter for the `DragStartCommand`. 
+
+</td>
+<td> 
+
+```xml
+<dragDrop:Draggable DragStartCommandParameter="{Binding DragStartData}"/>
+```
+
+</td>
+</tr>
+<tr>
+<td> DragStopCommand </td> <td>
+
+`ICommand`
+
+</td> <td> </td> <td> Command to execute when the drag operation stops. </td>
+<td> 
+
+```xml
+<dragDrop:Draggable DragStopCommand="{Binding DragStopCommand}"/>
+```
+
+</td>
+</tr>
+<tr>
+<td> DragStopCommandParameter </td> <td> 
+
+`Object?` 
+
+</td> <td> </td> <td> 
+
+Command parameter for the `DragStopCommand`.
+
+</td>
+<td> 
+
+```xml
+<dragDrop:Draggable DragStopCommandParameter="{Binding DragStopData}"/>
+```
+
+</td>
+</tr>
+<tr>
+<td> DragCompleteCommand </td> <td>
+
+`ICommand`
+
+</td> <td> </td> <td> Command to execute when the drag operation is completed. </td>
+<td> 
+
+```xml
+<dragDrop:Draggable DragCompleteCommand="{Binding DragCompleteCommand}"/>
+```
+
+</td>
+</tr>
+<tr>
+<td> DragCompleteCommandParameter </td> <td> 
+
+`Object?` 
+
+</td> <td> </td> <td> 
+
+Command parameter for the `DragCompleteCommand`.
+
+</td>
+<td> 
+
+```xml
+<dragDrop:Draggable DragCompleteCommandParameter="{Binding DragCompleteData}"/>
+```
+
+</td>
+</tr>
+</tbody>
+</table>
 
 The class exposes the following attached dependency properties.
 
-| Atached Dependency Property  | Type                      | Default             | Description                                                                                                                                   | Example Usage                                                                                                                                                                                                                                                                                                       |
-|------------------------------|---------------------------|---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| DragDropGroups               | `DragDropGroupCollection` |                     | Specifies which group(s) the draggable object belongs to. The object can only be dropped on targets belonging to the same group(s).           | <code style="display:block; white-space: pre">&lt;dragDrop:Draggable.DragDropGroups&gt;&#13;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dragDrop:DragDropGroup Key=&quot;Group1&quot;/&gt;&#13;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dragDrop:DragDropGroup Key=&quot;Group2&quot;/&gt;&#13;&lt;/dragDrop:Draggable.DragDropGroups&gt;</code> |
+<table>
+<thead>
+<tr>
+<th> Attached Dependency Property </th>
+<th> Type </th>
+<th> Description </th>
+<th> Example Usage </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> Container </td> <td>
 
+`Canvas`
+
+</td> <td> Canvas on which the dragged element is painted. </td>
+<td> 
+
+```xml
+<dragDrop:Draggable.DragDropGroups>
+    <dragDrop:DragDropGroup Key="Group1"/>
+    <dragDrop:DragDropGroup Key="Group2"/>
+</dragDrop:Draggable.DragDropGroups>
+```
+
+</td>
+</tr>
+</tbody>
+</table>
 
 ### Target
 Used to specify that an object is a drop target and configure it's behavior.
 
 The class exposes the following dependency properties.
 
-| Attached Dependency Property | Type                      | Description                                                                                                                       | Example Usage                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-|------------------------------|---------------------------|-----------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| DragEnterCommand             | `ICommand`                | Command to execute when a draggable is dragged over the target object.                                                            | `<dragDrop:Target DragEnterCommand="{Binding DragEnterCommand}"/>`                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| DragEnterCommandParameter    | `DragEnterParams`         | Command parameter for the `DragEnterCommand`.                                                                                     | `<dragDrop:Target DragEnterCommandParameter="{Binding DragEnterData}"/>`                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| DragLeaveCommand             | `ICommand`                | Command to execute when a draggable is dragged outside of or otherwise leaves the target object.                                  | `<dragDrop:Target DragLeaveCommand="{Binding DragLeaveCommand}"/>`                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| DragLeaveCommandParameter    | `DragCompleteParams`      | Command parameter for the `DragLeaveCommand`.                                                                                     | `<dragDrop:Target DragLeaveCommandParameter="{Binding DragLeaveData}"/>`                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| TargetObject                 | `Object?`                 | An object that can be used to store data associated with the target object.                                                       | `<dragDrop:Target TargetObject="{Binding DragTargetData}"/>`                                                                                                                                                                                                                                                                                                                                                                                                                                |
+<table>
+<thead>
+<tr>
+<th> Dependency Property </th>
+<th> Type </th>
+<th> Description </th>
+<th> Example Usage </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> DragEnterCommand </td><td> 
+
+`ICommand`
+
+</td><td> Command to execute when a draggable is dragged over the target object. </td>
+<td> 
+
+```xml
+<dragDrop:Target DragEnterCommand="{Binding DragEnterCommand}"/>
+```
+
+</td>
+</tr>
+<tr>
+<td> DragEnterCommandParameter </td><td>
+
+`DragEnterParams`
+
+</td><td>
+
+Command parameter for the `DragEnterCommand`.
+
+</td>
+<td>
+
+```xml
+<dragDrop:Target DragEnterCommandParameter="{Binding DragEnterData}"/>
+``` 
+
+</td>
+</tr>
+<tr>
+<td> DragLeaveCommand </td><td>
+
+`ICommand`
+
+</td><td> Command to execute when a draggable is dragged outside of or otherwise leaves the target object. </td>
+<td>
+
+```xml
+<dragDrop:Target DragLeaveCommand="{Binding DragLeaveCommand}"/>
+```
+
+</td>
+</tr>
+<tr>
+<td> DragLeaveCommandParameter </td><td>
+
+`DragCompleteParams`
+
+</td><td>
+
+Command parameter for the `DragLeaveCommand`.
+
+</td>
+<td>
+
+```xml
+<dragDrop:Target DragLeaveCommandParameter="{Binding DragLeaveData}"/>
+```
+
+</td>
+</tr>
+<tr>
+<td> TargetObject </td><td>
+
+`Object?` 
+
+</td><td> An object that can be used to store data associated with the target object. </td>
+<td>
+
+```xml
+<dragDrop:Target TargetObject="{Binding DragTargetData}"/>
+```
+
+</td>
+</tr>
+</tbody>
+</table>
 
 The class exposes the following attached dependency properties.
 
-| Attached Dependency Property | Type                      | Description                                                                                                                       | Example Usage                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-|------------------------------|---------------------------|-----------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| DragDropGroups               | `DragDropGroupCollection` | Specifies which group(s) the target object belongs to. The object is only a target for draggables belonging to the same group(s). | <code style="display:block; white-space: pre">&lt;dragDrop:Draggable.DragDropGroups&gt;&#13;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dragDrop:DragDropGroup Key=&quot;Group1&quot;/&gt;&#13;&nbsp;&nbsp;&nbsp;&nbsp;&lt;dragDrop:DragDropGroup Key=&quot;Group2&quot;/&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#13;&lt;/dragDrop:Draggable.DragDropGroups&gt;</code> |
+<table>
+<thead>
+<tr>
+<th> Attached Dependency Property </th>
+<th> Type </th>
+<th> Description </th>
+<th> Example Usage </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> DragDropGroups </td> <td>
+
+`DragDropGroupCollection`
+
+</td> <td> Specifies which group(s) the target object belongs to. The object is only a target for draggables belonging to the same group(s). </td>
+<td> 
+
+```xml
+<dragDrop:Draggable.DragDropGroups>
+    <dragDrop:DragDropGroup Key="Group1"/>
+    <dragDrop:DragDropGroup Key="Group2"/>
+</dragDrop:Draggable.DragDropGroups>
+```
+
+</td>
+</tr>
+</tbody>
+</table>
 
 ### DragDropGroupCollection
 A freezable collection of `DragDropGroup`s. For usage, see above examples.
@@ -150,26 +451,117 @@ A freezable collection of `DragDropGroup`s. For usage, see above examples.
 ### DragDropGroup
 Use this to specify which group(s) draggable and target objects belong to. You will only be able to drag an object on a target if they belong to the same group(s).
 
-| Dependency Property | Type     | Description                                 | Example Usage                                                                                               |
-|---------------------|----------|---------------------------------------------|-------------------------------------------------------------------------------------------------------------|
-| Key                 | `string` | Uniquely identifies a drag and droup group. | <code style="display:block; white-space: pre">&lt;dragDrop:DragDropGroup Key=&quot;Group1&quot;/&gt;</code> |
+<table>
+<thead>
+<tr>
+<th> Dependency Property </th>
+<th> Type </th>
+<th> Description </th>
+<th> Example Usage </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> Key </td> <td>
+
+`string`
+
+</td> <td> Uniquely identifies a drag and droup group. </td>
+<td> 
+
+```xml
+<dragDrop:DragDropGroup Key="Group1"/>
+```
+
+</td>
+</tr>
+</tbody>
+</table>
 
 ### DragCompleteParams
 The `DragCompleteCommand` will pass an instance of this class as a parameter when it is executed.
 
-| Property           | Type                 | Description                                                                                          |
-|--------------------|----------------------|------------------------------------------------------------------------------------------------------|
-| DraggableObject    | `object?`            | The data object associated with the draggable that triggered the drag complete command.              |
-| TargetObject       | `object?`            | The data object associated with the target that triggered the drag complete command.                 |
-| DragEnterDirection | `DragEnterDirection` | A `DragEnterDirection` enum which specifies from what direction an object was dragged on the target. |
+<table>
+<thead>
+<tr>
+<th> Property </th>
+<th> Type </th>
+<th> Description </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> DraggableObject </td>
+<td>
+
+`object?`
+
+</td> <td> The data object associated with the draggable that triggered the drag complete command. </td>
+</tr>
+
+<tr>
+<td> TargetObject </td>
+<td>
+
+`object?`
+
+</td> <td> The data object associated with the target that triggered the drag complete command. </td>
+
+</tr>
+
+<tr>
+<td> DragEnterDirection </td>
+<td>
+
+`DragEnterDirection`
+
+</td> <td> 
+
+A `DragEnterDirection` enum which specifies from what direction an object was dragged on the target.
+
+</td>
+
+</tr>
+</tbody>
+</table>
 
 ### DragEnterParams
 The `DragEnterCommand` will pass an instance of this class as a parameter when it is executed.
 
-| Property           | Type                 | Description                                                                                          |
-|--------------------|----------------------|------------------------------------------------------------------------------------------------------|
-| TargetObject       | `object?`            | The data object associated with the target that triggered the drag complete command.                 |
-| DragEnterDirection | `DragEnterDirection` | A `DragEnterDirection` enum which specifies from what direction an object was dragged on the target. |
+<table>
+<thead>
+<tr>
+<th> Property </th>
+<th> Type </th>
+<th> Description </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> TargetObject </td>
+<td>
+
+`object?`
+
+</td> <td> The data object associated with the target that triggered the drag complete command. </td>
+
+</tr>
+
+<tr>
+<td> DragEnterDirection </td>
+<td>
+
+`DragEnterDirection`
+
+</td> <td> 
+
+A `DragEnterDirection` enum which specifies from what direction an object was dragged on the target.
+
+</td>
+
+</tr>
+</tbody>
+</table>
 
 #### Usage
 ```csharp
@@ -221,13 +613,7 @@ public class DragCompleteCommand : ICommand
 ```
 
 ### DragEnterDirection
-An enum used to represent from which direction a target was entered. It contains the following values:
-* North (`0b0001`)
-* East  (`0b0010`)
-* South (`0b0100`)
-* West  (`0b1000`)
-
-The enum supports bitwise operations as it is marked with the `[Flags]` attribute.
+An enum used to represent from which direction a target was entered.
 
 #### Enum values
 | Name  | Value    |
@@ -236,6 +622,8 @@ The enum supports bitwise operations as it is marked with the `[Flags]` attribut
 | East  | `0b0010` |
 | South | `0b0100` |
 | West  | `0b1000` |
+
+The enum supports bitwise operations as it is marked with the `[Flags]` attribute.
 
 ### DragInitiator
 An enum used to specify which kind of user interaction can trigger a drag and drop event on a draggable object. It contains the following:
