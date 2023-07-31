@@ -5,7 +5,7 @@ namespace WpfDragAndDrop
     public class WpfTrueDragAndDrop : Freezable
     {
         public static readonly DependencyProperty DraggableProperty = DependencyProperty.RegisterAttached("Draggable", typeof(Draggable), typeof(WpfTrueDragAndDrop), new PropertyMetadata(null, OnDraggableChanged));
-        public static readonly DependencyProperty TargetProperty = DependencyProperty.RegisterAttached("Target", typeof(Target), typeof(WpfTrueDragAndDrop), new PropertyMetadata(null));
+        public static readonly DependencyProperty TargetProperty = DependencyProperty.RegisterAttached("Target", typeof(Target), typeof(WpfTrueDragAndDrop), new PropertyMetadata(null, OnTargetChanged));
 
         public static Draggable GetDraggable(DependencyObject obj) => (Draggable)obj.GetValue(DraggableProperty);
         public static void SetDraggable(DependencyObject obj, Draggable value) => obj.SetValue(DraggableProperty, value);
@@ -22,6 +22,14 @@ namespace WpfDragAndDrop
 
             ((Draggable)e.NewValue).associatedElement = (FrameworkElement)d;
             ((Draggable)e.NewValue).Initialize();
+        }
+
+        private static void OnTargetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue == null)
+                return;
+
+            ((Target)e.NewValue).associatedElement = (FrameworkElement)d;
         }
     }
 }

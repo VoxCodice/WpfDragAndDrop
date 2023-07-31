@@ -5,6 +5,8 @@ namespace WpfDragAndDrop
 {
     public partial class Target : Freezable
     {
+        protected internal FrameworkElement associatedElement = new();
+
         public static readonly DependencyProperty DragDropGroupsProperty =
             DependencyProperty.RegisterAttached("DragDropGroups", typeof(DragDropGroupCollection), typeof(Target), new FrameworkPropertyMetadata());
 
