@@ -23,7 +23,7 @@ namespace WpfDragAndDrop
             DependencyProperty.Register(nameof(DragLeaveCommandParameter), typeof(object), typeof(Target), new PropertyMetadata(null));
 
         public static readonly DependencyProperty TargetObjectProperty =
-            DependencyProperty.Register("TargetObject", typeof(object), typeof(Target), new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(TargetObject), typeof(object), typeof(Target), new PropertyMetadata(null));
 
         public Target() => SetDragDropGroups(this, new DragDropGroupCollection());
 

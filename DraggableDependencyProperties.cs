@@ -16,8 +16,8 @@ namespace WpfDragAndDrop
         public static readonly DependencyProperty DragStartCommandParameterProperty = DependencyProperty.Register(nameof(DragStartCommandParameter), typeof(object), typeof(Draggable), new PropertyMetadata(null));
         public static readonly DependencyProperty DragStopCommandProperty = DependencyProperty.Register(nameof(DragStopCommand), typeof(ICommand), typeof(Draggable), new PropertyMetadata(null));
         public static readonly DependencyProperty DragStopCommandParameterProperty = DependencyProperty.Register(nameof(DragStopCommandParameter), typeof(object), typeof(Draggable), new PropertyMetadata(null));
-        public static readonly DependencyProperty DragCompleteCommandProperty = DependencyProperty.Register("DragCompleteCommand", typeof(ICommand), typeof(Draggable), new PropertyMetadata(null));
-        public static readonly DependencyProperty DragCompleteCommandParameterProperty = DependencyProperty.Register("DragCompleteCommandParameter", typeof(object), typeof(Draggable), new PropertyMetadata(null));
+        public static readonly DependencyProperty DragCompleteCommandProperty = DependencyProperty.Register(nameof(DragCompleteCommand), typeof(ICommand), typeof(Draggable), new PropertyMetadata(null));
+        public static readonly DependencyProperty DragCompleteCommandParameterProperty = DependencyProperty.Register(nameof(DragCompleteCommandParameter), typeof(object), typeof(Draggable), new PropertyMetadata(null));
 
         public int Delay
         {
