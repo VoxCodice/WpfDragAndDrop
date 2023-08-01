@@ -96,7 +96,9 @@ Follow these simple steps to get started with the **WpfDragAndDrop** library:
 8.  Bind the various commands to your view model.
 
 ## Sample
-Coming soon.
+For a practical example of how to use the **WpfDragAndDrop** library, you can check out the [WpfDragAndDrop-Sample](https://github.com/VoxCodice/WpfDragAndDrop-Sample) repository.
+
+This sample project demonstrates the implementation of drag-and-drop functionality using the WpfDragAndDrop library in a WPF application. 
 
 ## API Reference
 
@@ -638,6 +640,13 @@ The enum supports bitwise operations as it is marked with the `[Flags]` attribut
 | LeftMouse  | `0b0010` |
 | RightMouse | `0b0100` |
 | Touch      | `0b1000` |
+
+## Notes
+The above code snippets are simplified examples. You may need to handle more scenarios, such as checking valid drop targets or implementing visual feedback during the drag operation.
+
+The **WpfDragAndDrop** library provided in this repository is a personal project and is not intended for production use.
+
+Please be aware that this library may contain bugs, incomplete features, or other issues that could impact its functionality or performance. It may not follow best practices, and no guarantees are made regarding its suitability for any specific purpose.
 
 ## License
 Licensed under the <a href="https://raw.githubusercontent.com/VoxCodice/WpfDragAndDrop/master/LICENSE.txt">GPL-3.0 license</a>.
