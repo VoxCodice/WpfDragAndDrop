@@ -1,6 +1,6 @@
 # WpfDragAndDrop
 
-**WpfDragAndDrop** is a library for adding drag-and-drop functionality to your WPF applications. 
+**WpfDragAndDrop** is a library for adding drag-and-drop functionality to your WPF applications.Â 
 
 ## Features
 
@@ -480,53 +480,6 @@ Use this to specify which group(s) draggable and target objects belong to. You w
 </tbody>
 </table>
 
-### DragCompleteParams
-The `DragCompleteCommand` will pass an instance of this class as a parameter when it is executed.
-
-<table>
-<thead>
-<tr>
-<th> Property </th>
-<th> Type </th>
-<th> Description </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td> DraggableObject </td>
-<td>
-
-`object?`
-
-</td> <td> The data object associated with the draggable that triggered the drag complete command. </td>
-</tr>
-
-<tr>
-<td> TargetObject </td>
-<td>
-
-`object?`
-
-</td> <td> The data object associated with the target that triggered the drag complete command. </td>
-
-</tr>
-
-<tr>
-<td> DragEnterDirection </td>
-<td>
-
-`DragEnterDirection`
-
-</td> <td> 
-
-A `DragEnterDirection` enum which specifies from what direction an object was dragged on the target.
-
-</td>
-
-</tr>
-</tbody>
-</table>
-
 ### DragEnterParams
 The `DragEnterCommand` will pass an instance of this class as a parameter when it is executed.
 
@@ -581,11 +534,60 @@ public class DragEnterCommand : ICommand
         if (dragEnterParams.TargetObject is not SomeDataObject target)
             return;
 
+        var direction = dragEnterParams.DragEnterDirection;
+
         // Do something
         Trace.WriteLine($"{target} was entered from {direction}.");
     }
 }
 ```
+
+### DragCompleteParams
+The `DragCompleteCommand` will pass an instance of this class as a parameter when it is executed.
+
+<table>
+<thead>
+<tr>
+<th> Property </th>
+<th> Type </th>
+<th> Description </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> DraggableObject </td>
+<td>
+
+`object?`
+
+</td> <td> The data object associated with the draggable that triggered the drag complete command. </td>
+</tr>
+
+<tr>
+<td> TargetObject </td>
+<td>
+
+`object?`
+
+</td> <td> The data object associated with the target that triggered the drag complete command. </td>
+
+</tr>
+
+<tr>
+<td> DragEnterDirection </td>
+<td>
+
+`DragEnterDirection`
+
+</td> <td> 
+
+A `DragEnterDirection` enum which specifies from what direction an object was dragged on the target.
+
+</td>
+
+</tr>
+</tbody>
+</table>
 
 #### Usage
 ```csharp
@@ -638,7 +640,7 @@ The enum supports bitwise operations as it is marked with the `[Flags]` attribut
 | Any        | `0b1111` |
 | Mouse      | `0b0001` |
 | LeftMouse  | `0b0010` |
-| RightMouse | `0b0100` |
+| RightMouseÂ | `0b0100` |
 | Touch      | `0b1000` |
 
 ## Notes
